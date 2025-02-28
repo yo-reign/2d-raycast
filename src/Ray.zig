@@ -24,7 +24,7 @@ pub fn draw(self: Ray, color: rl.Color) void {
     rl.drawLineV(self.pos, end, color);
 }
 
-pub fn cast(self: Ray, wall: Boundary) bool {
+pub fn cast(self: Ray, wall: Boundary) ?Vector2 {
     const x1 = wall.start.x;
     const y1 = wall.start.y;
     const x2 = wall.end.x;
@@ -46,8 +46,7 @@ pub fn cast(self: Ray, wall: Boundary) bool {
     const den: f32 = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     // If den == 0 that means that both line segments are perfectly parallel with each other
     if (den == 0) {
-        //return null;
-        return false;
+        return null;
     }
 
     const t: f32 = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
@@ -55,12 +54,26 @@ pub fn cast(self: Ray, wall: Boundary) bool {
 
     print("t: {d}\n u: {d}\n\n", .{ t, u });
 
-    // NOTE: by requiring u to be between 0 and 1 I am making the ray we shoote finite
+    // NOTE: by requiring u to be between 0 and 1 I am making the ray we shoot finite
     if (self.is_finite) {
-        if (t > 0 and t < 1 and u > 0 and u < 1) return true else return false;
+        if (t > 0 and t < 1 and u > 0 and u < 1) {
+            const px = x1 + (t * (x2 - x1));
+            const py = y1 + (t * (y2 - y1));
+            return Vector2.init(px, py);
+        } else {
+            return null;
+        }
     } else {
-        if (t > 0 and t < 1 and u > 0) return true else return false;
+        if (t > 0 and t < 1 and u > 0) {
+            const px = x1 + (t * (x2 - x1));
+            const py = y1 + (t * (y2 - y1));
+            return Vector2.init(px, py);
+        } else {
+            return null;
+        }
     }
+
+    // TODO: return the point where the ray and wall intersect
 }
 
 pub fn lookAtV(self: *Ray, pos: Vector2) void {

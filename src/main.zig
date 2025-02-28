@@ -32,12 +32,15 @@ pub fn main() anyerror!void {
     // Main game loop
     while (!rl.windowShouldClose()) { // Detect window close button or ESC key
         var ray_color: rl.Color = undefined;
+        var intersection_point: ?rl.Vector2 = undefined;
 
         // Update
         {
+            intersection_point = ray.cast(wall);
+
             // If ray intersects with a boundary, change its color indicator
             ray_color = rl.Color.green;
-            if (ray.cast(wall)) {
+            if (intersection_point != null) {
                 ray_color = rl.Color.red;
             }
 
@@ -53,6 +56,10 @@ pub fn main() anyerror!void {
 
             wall.draw(rl.Color.black);
             ray.draw(ray_color);
+
+            if (intersection_point != null) {
+                rl.drawCircleV(intersection_point.?, 10, rl.Color.purple);
+            }
         }
     }
 }
