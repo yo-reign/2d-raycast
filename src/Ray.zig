@@ -25,6 +25,9 @@ pub fn draw(self: Ray, color: rl.Color) void {
 }
 
 pub fn cast(self: Ray, wall: Boundary) ?Vector2 {
+    // The math used in this function is directly from the wikipedia page:
+    // https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line_segment
+
     const x1 = wall.start.x;
     const y1 = wall.start.y;
     const x2 = wall.end.x;
@@ -72,8 +75,6 @@ pub fn cast(self: Ray, wall: Boundary) ?Vector2 {
             return null;
         }
     }
-
-    // TODO: return the point where the ray and wall intersect
 }
 
 pub fn lookAtV(self: *Ray, pos: Vector2) void {

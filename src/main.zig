@@ -8,10 +8,10 @@ const Ray = @import("Ray.zig");
 pub fn main() anyerror!void {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const screenWidth = 800;
-    const screenHeight = 800;
+    const screen_width = 800;
+    const screen_height = 800;
 
-    rl.initWindow(screenWidth, screenHeight, "2D Raycast");
+    rl.initWindow(screen_width, screen_height, "2D Raycast");
     defer rl.closeWindow(); // Close window and OpenGL context
 
     rl.setTargetFPS(144);
@@ -24,8 +24,9 @@ pub fn main() anyerror!void {
     var ray = Ray{
         .pos = rl.Vector2{ .x = 200, .y = 400 },
         .dir = rl.Vector2{ .x = 1, .y = 0 },
-        .is_finite = true,
-        .length = 700,
+        // .is_finite = true,
+        // .length = 700,
+        .is_finite = false,
     };
     //--------------------------------------------------------------------------------------
 
